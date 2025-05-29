@@ -1,18 +1,16 @@
 package entities.model;
 
 import java.util.List;
+import java.util.Scanner;
 
 import entities.Cliente;
-import entities.Endereco;
 import entities.Produto;
 
 public interface App {
 
-	Produto newPdt(long id, String nome, int quantidade);
+	Produto newPdt(List<Produto>  estoque ,Scanner sc);
 
-	Endereco newEd(String bairro, String rua,  int numero);
-
-	Cliente newCt(long idCliente, String nomeCliente, Endereco endereco);
+	Cliente newCliente(List<Cliente> cliente, Scanner sc);	
 
 	boolean idConfere(List<Produto> estoque, long id);
 
@@ -20,9 +18,11 @@ public interface App {
 
 	<t>void confereList(List<t> list);
 	
-	void filtroEstoque(List<Produto> list, String busca);
+	Produto filtroEstoque(Scanner sc, List<Produto> estoque);
 	
-	void filtroCliente(List<Cliente> list, String busca);
+	Cliente filtroCliente(Scanner sc, List<Cliente> cliente);
+	
+	
 	
 	
 }
