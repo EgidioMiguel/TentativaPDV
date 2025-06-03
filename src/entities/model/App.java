@@ -22,7 +22,11 @@ public interface App {
 	
 	Cliente filtroCliente(Scanner sc, List<Cliente> cliente);
 	
+	int lerInteiro(Scanner sc);
 	
+	String lerString(Scanner sc);
 	
+	double lerDouble(Scanner sc);
 	
+	long lerLong(Scanner sc);	
 }

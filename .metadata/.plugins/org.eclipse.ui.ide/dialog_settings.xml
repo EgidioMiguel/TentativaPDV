@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="C:\Users\Andressa\Desktop\Projetos  Java"/>
+		<item value="C:\Users\Andressa\Desktop\Projetos  Java\Massive Darkens Java"/>
+		<item value="C:\Users\Andressa\Desktop\Projetos  Java\PDV"/>
+	</list>
 </section>

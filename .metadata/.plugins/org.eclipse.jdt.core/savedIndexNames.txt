@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Users\Andressa\Desktop\Projetos  Java\PDV\.metadata\.plugins\org.eclipse.jdt.core
+2741589051.index
+3718959799.index
+318364422.index
