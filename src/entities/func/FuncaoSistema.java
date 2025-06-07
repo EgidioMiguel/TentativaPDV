@@ -47,8 +47,8 @@ public class FuncaoSistema implements AppSistema {
 				return e;
 			}
 		}
-		System.out.println("Produto nao encontrado");
-		System.out.print("Desaja fazer Cadastro ?1-S/2-N ==> ");
+		System.out.println("Produto não encontrado");
+		System.out.print("Desaja fazer Cadastro ?1-Sim |0-Não --> ");
 		int resposta = app.lerInteiro(sc);
 		if (resposta == 1) {
 			System.out.print("Cadastre Id: ");
@@ -69,7 +69,7 @@ public class FuncaoSistema implements AppSistema {
 	public ProdutoVenda newPdtVenda(Scanner sc, List<Produto> estoque, App app) {
 		Produto pdtVenda = app.filtroEstoque(sc, estoque);
 		if (pdtVenda == null) {
-			System.out.print("Produto nao encontrado! Fazer cadastro ? 1-Sim|2-Não --> ");
+			System.out.print("Produto nao encontrado! Fazer cadastro ? 1-Sim | 0-Não --> ");
 			int fazerProduto = app.lerInteiro(sc);
 			if (fazerProduto == 1) {
 				pdtVenda = app.newPdt(estoque, sc);
@@ -82,8 +82,8 @@ public class FuncaoSistema implements AppSistema {
 		System.out.print("Quantidade: ");
 		int quant = app.lerInteiro(sc);
 		if (pdtVenda.getQuantidade() < quant) {
-			System.out.println("Estoque insuficiente|Valor em estoque: " + pdtVenda.getQuantidade());
-			System.out.print("Deseja continuar ?1-Sim/0-Não --> ");
+			System.out.println("Estoque insuficiente|Quantidade em estoque: " + pdtVenda.getQuantidade());
+			System.out.print("Deseja continuar ? 1-Sim | 0-Não --> ");
 			int cont = app.lerInteiro(sc);
 			if (cont == 1) {
 				System.out.print("Nova quantidade: ");
@@ -102,10 +102,13 @@ public class FuncaoSistema implements AppSistema {
 
 	@Override
 	public Pedido newPedido(Scanner sc, List<Cliente> cliente, List<Produto> estoque, List<Pedido> venda, App app) {
+		
+		try{
+		
 		System.out.println("==Cliente==");
 		Cliente clt = app.filtroCliente(sc, cliente);
 		if (clt == null) {
-			System.out.print("Fazer Cadastro do Cliente ? 1-Sim | 0-Não ==> ");
+			System.out.print("Fazer Cadastro do Cliente ? 1-Sim | 0-Não --> ");
 			int fazerCliente = app.lerInteiro(sc);
 			if (fazerCliente == 1) {
 				clt = app.newCliente(cliente, sc);
@@ -145,6 +148,12 @@ public class FuncaoSistema implements AppSistema {
 
 		venda.add(pdd);
 		return pdd;
+		}
+		catch(Exception  e){
+			System.out.println("Erro ao criar o pedido : " + e.getMessage());
+			return null;
+		}
+		
 	}
 
 	@Override
@@ -169,7 +178,7 @@ public class FuncaoSistema implements AppSistema {
 		}
 		if (pedidoParaCancelar != null) {
 	        System.out.println(pedidoParaCancelar);
-	        System.out.print("Deseja Cancelar esse pedido? 1-Sim -->");
+	        System.out.print("Deseja Cancelar esse pedido? 1-Sim --> ");
 	        int desejaCancelarPedido = app.lerInteiro(sc);
 	        if (desejaCancelarPedido == 1) {
 	        	for (ProdutoVenda item : pedidoParaCancelar.getVenda()) {

@@ -92,7 +92,7 @@ public class Funcao implements App {
 
 	@Override
 	public Produto filtroEstoque(Scanner sc, List<Produto> estoque) {
-		System.out.print("Produto: ");
+		System.out.print("Nome do produto: ");
 		String busca = lerString(sc);
 
 		List<Produto> encontrados = new ArrayList<>();

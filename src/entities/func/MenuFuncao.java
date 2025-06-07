@@ -21,7 +21,7 @@ public class MenuFuncao implements Menu {
 
 		do {
 			System.out.println("\n==Menu Inicial==");
-			System.out.print("1 - Cadastro | 2 - Procurar | 3 - Compra | 4 - Venda | 0 - Desligar  == ");
+			System.out.print("1-Cadastro | 2-Busca | 3-Compra | 4-Venda | 0-Desligar  == ");
 			
 			menu = app.lerInteiro(sc);
 		
@@ -32,7 +32,7 @@ public class MenuFuncao implements Menu {
 				break;
 
 			case 2:
-				System.out.println("Procurar: ");
+				System.out.println("Busca: ");
 				menuProcura(sc, app, estoque, cliente, compra, venda, cancelado);
 				break;
 			case 3:
@@ -58,7 +58,7 @@ public class MenuFuncao implements Menu {
 
 		while (menuCadastro != 0) {
 			System.out.println("\n==Menu Cadastro==");
-			System.out.print("1 - Cliente | 2 - Produto | 0 - Voltar | ===> ");
+			System.out.print("1 - Cliente | 2 - Estoque | 0 - Voltar | ===> ");
 
 			int cadastro = app.lerInteiro(sc);
 
@@ -86,8 +86,8 @@ public class MenuFuncao implements Menu {
 		int menuProcura = 1;
 
 		while (menuProcura != 0) {
-			System.out.println("\n==Menu Procurar==");
-			System.out.print("1-Cliente | 2-Produto | 3-Compra | 4-Venda | 0-Voltar  ==> ");
+			System.out.println("\n==Menu Busca==");
+			System.out.print("1-Cliente | 2-Estoque | 3-Compra | 4-Venda | 0-Voltar --> ");
 			
 			int procura = app.lerInteiro(sc);
 
@@ -96,7 +96,7 @@ public class MenuFuncao implements Menu {
 			case 1:
 				System.out.println("==Lista Cliente==");
 				app.confereList(cliente);
-				System.out.print("Procurar um cliente ?1-Sim | 0-Não ==> ");
+				System.out.print("Procurar um cliente ? 1-Sim | 0-Não --> ");
 				int find = app.lerInteiro(sc);
 				if (find == 1) {
 					app.filtroCliente(sc, cliente);
@@ -107,7 +107,7 @@ public class MenuFuncao implements Menu {
 			case 2:
 				System.out.println("==Lista Estoque==");
 				app.confereList(estoque);
-				System.out.print("Procurar um produto ? 1-Sim |0-Não ==> ");
+				System.out.print("Procurar um produto ? 1-Sim | 0-Não --> ");
 				int findEstoque = app.lerInteiro(sc);
 				if (findEstoque == 1) {
 					app.filtroEstoque(sc, estoque);
@@ -116,11 +116,11 @@ public class MenuFuncao implements Menu {
 					break;
 				}
 			case 3: 
-				System.out.println("Todas Compras:");
+				System.out.println("==Compras==");
 				app.confereList(compra);
 				break;
 			case 4:
-				System.out.print("Vendas Lançadas->1 | Vendas Canceladas->2 -->" );
+				System.out.print("1-Vendas Lançadas|2-Vendas Canceladas --> " );
 				int procurarVenda = app.lerInteiro(sc);
 				if(procurarVenda == 1) {
 				System.out.println("Vendas Lançadas:");
@@ -138,7 +138,7 @@ public class MenuFuncao implements Menu {
 				System.out.println("Opção Invalida");
 			}
 
-			System.out.print("Fazer nova procura? 0 - Não / 1 - Sim: ");
+			System.out.print("Fazer nova procura? 1-Sim | 0-Não --> ");
 			menuProcura = app.lerInteiro(sc);
 			
 		}
@@ -151,7 +151,7 @@ public class MenuFuncao implements Menu {
 
 		while (menuCompra != 0) {
 			System.out.println("\n==Menu Compra==");
-			System.out.print("1-Lançar | 0-Voltar  ==> ");
+			System.out.print("1-Lançar | 0-Voltar  --> ");
 			
 			int lancarCompra = app.lerInteiro(sc);
 
@@ -166,7 +166,7 @@ public class MenuFuncao implements Menu {
 			
 			}
 			
-			System.out.print("Fazer nova compra? 0 - Não / 1 - Sim: ");
+			System.out.print("Fazer nova compra? 1-Sim | 0-Não --> ");
 			menuCompra = app.lerInteiro(sc);
 			
 		}
@@ -179,7 +179,7 @@ public class MenuFuncao implements Menu {
 
 		while (menuVenda != 0) {
 			System.out.println("\n==Menu Venda==");
-			System.out.print("1-Lançar | 2-Cancelar | 0-Voltar  ==> ");
+			System.out.print("1-Lançar | 2-Cancelar | 0-Voltar  --> ");
 			
 			int lancarVenda = app.lerInteiro(sc);
 
@@ -196,7 +196,7 @@ public class MenuFuncao implements Menu {
 			
 			}
 			
-			System.out.print("Fazer nova Venda? 0 - Não / 1 - Sim: ");
+			System.out.print("Fazer nova Venda? 1-Sim | 0-Não --> ");
 			menuVenda = app.lerInteiro(sc);
 			
 		}
