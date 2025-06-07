@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nome": "Coca-Cola 350ml",
+    "quantidade": 12
+  },
+  {
+    "id": 2,
+    "nome": "Coca-Cola 2lt",
+    "quantidade": 6
+  }
+]

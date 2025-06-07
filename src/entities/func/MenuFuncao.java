@@ -16,7 +16,7 @@ public class MenuFuncao implements Menu {
 
 	@Override
 	public void mostrarMenuPrincipal(Scanner sc, AppSistema apc, App app, List<Produto> estoque, List<Cliente> cliente,
-			List<Compra> compra,List<Pedido> venda) {
+			List<Compra> compra, List<Pedido> venda, List<Pedido> cancelado) {
 		int menu;
 
 		do {
@@ -33,13 +33,13 @@ public class MenuFuncao implements Menu {
 
 			case 2:
 				System.out.println("Procurar: ");
-				menuProcura(sc, app, estoque, cliente, compra, venda);
+				menuProcura(sc, app, estoque, cliente, compra, venda, cancelado);
 				break;
 			case 3:
 				menuCompra(sc, apc, app, estoque, compra);
 				break;
 			case 4: 
-				
+				menuVenda(sc, apc, app, cliente, estoque, venda, cancelado);				
 				break;
 			case 0:
 				System.out.println("Desligando...");
@@ -82,7 +82,7 @@ public class MenuFuncao implements Menu {
 	}
 
 	@Override
-	public void menuProcura(Scanner sc, App app, List<Produto> estoque, List<Cliente> cliente, List<Compra> compra,List<Pedido> venda) {
+	public void menuProcura(Scanner sc, App app, List<Produto> estoque, List<Cliente> cliente, List<Compra> compra,List<Pedido> venda, List<Pedido> cancelado) {
 		int menuProcura = 1;
 
 		while (menuProcura != 0) {
@@ -120,10 +120,16 @@ public class MenuFuncao implements Menu {
 				app.confereList(compra);
 				break;
 			case 4:
-				System.out.println("Todas  Vendas:");
+				System.out.print("Vendas Lançadas->1 | Vendas Canceladas->2 -->" );
+				int procurarVenda = app.lerInteiro(sc);
+				if(procurarVenda == 1) {
+				System.out.println("Vendas Lançadas:");
 				app.confereList(venda);
-				break;
-				
+				break;}
+				else {
+					System.out.println("Vendas Canceladas:");
+					app.confereList(cancelado);
+					break;}		
 
 			case 0:
 				return;
@@ -164,6 +170,37 @@ public class MenuFuncao implements Menu {
 			menuCompra = app.lerInteiro(sc);
 			
 		}
+	}
+
+	@Override
+	public void menuVenda(Scanner sc, AppSistema apc, App app, List<Cliente> cliente,List<Produto> estoque, List<Pedido> venda, List<Pedido> cancelado) {
+		
+		int menuVenda = 1;
+
+		while (menuVenda != 0) {
+			System.out.println("\n==Menu Venda==");
+			System.out.print("1-Lançar | 2-Cancelar | 0-Voltar  ==> ");
+			
+			int lancarVenda = app.lerInteiro(sc);
+
+			switch (lancarVenda) {
+			case 1:
+				apc.newPedido(sc, cliente, estoque, venda, app);	
+				break;
+			case 2: 
+				apc.cancelarPedido(sc, venda, cancelado, estoque, app);
+			case 0:
+				return;
+			default:
+				System.out.println("Opção Invalida");
+			
+			}
+			
+			System.out.print("Fazer nova Venda? 0 - Não / 1 - Sim: ");
+			menuVenda = app.lerInteiro(sc);
+			
+		}
+		
 	}
 
 	

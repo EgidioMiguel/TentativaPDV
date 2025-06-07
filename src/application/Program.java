@@ -12,6 +12,7 @@ import entities.func.MenuFuncao;
 import entities.model.App;
 import entities.model.AppSistema;
 import entities.model.Menu;
+import save.SistemaJson;
 import sistemas.Compra;
 import sistemas.Pedido;
 
@@ -23,14 +24,21 @@ public class Program {
 		App app  = new Funcao();
 		AppSistema aps = new FuncaoSistema();
 		Menu  menu = new MenuFuncao();
+		SistemaJson sj = new SistemaJson();
+		
 		
 		List<Cliente> cliente = new ArrayList<>();
 		List<Produto> estoque = new ArrayList<>();
 		List<Compra> compra = new ArrayList<>();
-		List<Pedido>  venda = new ArrayList<>();		
+		List<Pedido>  venda = new ArrayList<>();
+		List<Pedido> cancelado = new ArrayList<>();
 		
-		menu.mostrarMenuPrincipal(sc, aps, app, estoque, cliente, compra, venda);		
+		sj.carregarTudo(estoque, cliente, compra, venda, cancelado);	
+		
+		menu.mostrarMenuPrincipal(sc, aps, app, estoque, cliente, compra, venda, cancelado);		
 
+		sj.salvarTudo(estoque, cliente, compra, venda, cancelado);
+		
 		sc.close();
 	}
 

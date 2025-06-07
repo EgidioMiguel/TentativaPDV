@@ -9,14 +9,16 @@ import entities.Cliente;
 
 public class Pedido {
 	
+	private static long sequencia = 1;
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");	
+	private long id;
 	private Cliente cliente;
 	private LocalDate data;
 	private List<ProdutoVenda> venda =  new ArrayList<>();
 	
 	
 	public Pedido(Cliente cliente, LocalDate data) {
-		super();
+		this.id = sequencia++;
 		this.cliente = cliente;
 		this.data = data;
 	}
@@ -27,6 +29,10 @@ public class Pedido {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public LocalDate getData() {
@@ -60,7 +66,8 @@ public class Pedido {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Data: " + data.format(dtf));
+		sb.append("Pedido nº: " + id );
+		sb.append(" |Data: " + data.format(dtf));
 		sb.append(" | Cliente: " + cliente.getNomeCliente());
 		sb.append("\nPedido: ");
 		for(ProdutoVenda pv : venda) {

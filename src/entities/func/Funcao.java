@@ -55,6 +55,7 @@ public class Funcao implements App {
 		String nomeCliente = lerString(sc);
 		Cliente newCLT = new Cliente(idCliente, nomeCliente, endereco);
 		cliente.add(newCLT);
+		
 		return newCLT;
 	}
 
@@ -115,7 +116,7 @@ public class Funcao implements App {
 		}
 
 		else {
-			System.out.println("Digite ID do produto desejado: ");
+			System.out.print("Digite ID do produto desejado: ");
 			long idSelecionado = lerLong(sc);
 			for (Produto a : encontrados) {
 				if (a.getId() == idSelecionado) {
@@ -213,10 +214,11 @@ public class Funcao implements App {
 	@Override
 	public long lerLong(Scanner sc) {
 		long valor;
-
+		
 		while (!sc.hasNextLong()) {
-			System.out.println("Digite um número válido: ");
-			sc.next();
+			
+			System.out.print("Digite um número válido: ");
+			sc.nextLine();
 		}
 		valor = sc.nextLong();
 		sc.nextLine();

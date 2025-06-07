@@ -1,0 +1,12 @@
+[
+  {
+    "data": "06/06/2025",
+    "produto": {
+      "id": 2,
+      "nome": "Coca-Cola 2lt",
+      "quantidade": 6
+    },
+    "quantidadeComprada": 6,
+    "precoCompra": 9.99
+  }
+]

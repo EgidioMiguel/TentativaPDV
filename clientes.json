@@ -1,0 +1,11 @@
+[
+  {
+    "idCliente": 1,
+    "nomeCliente": "Marisa Luz",
+    "endereco": {
+      "bairro": "Pq Aeroporto",
+      "rua": "Jose Dantas",
+      "numero": 116
+    }
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "cliente": {
+      "idCliente": 1,
+      "nomeCliente": "Marisa Luz",
+      "endereco": {
+        "bairro": "Pq Aeroporto",
+        "rua": "Jose Dantas",
+        "numero": 116
+      }
+    },
+    "data": "06/06/2025",
+    "venda": [
+      {
+        "produto": {
+          "id": 1,
+          "nome": "Coca-Cola 350ml",
+          "quantidade": 12
+        },
+        "quantia": 6,
+        "valorVenda": 4.0
+      }
+    ]
+  }
+]

@@ -19,7 +19,11 @@ public interface AppSistema {
 	
 	ProdutoVenda newPdtVenda(Scanner sc, List<Produto> estoque, App app);
 	
-	Pedido newPedido(Scanner sc,List<Cliente> cliente, List<Produto> estoque, App app);
+	Pedido newPedido(Scanner sc,List<Cliente> cliente, List<Produto> estoque,List<Pedido> venda, App app);
 	
-
+	void cancelarPedido(Scanner sc, List<Pedido> venda, List<Pedido> cancelado, List<Produto> estoque, App app);
+	
+	Pedido acharPedidoPorId(Scanner sc, List<Pedido> venda, App app);
+	
+	Pedido acharPedidoPorNome(Scanner sc, List<Pedido> venda, App app);
 }

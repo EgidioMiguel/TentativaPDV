@@ -1,6 +1,7 @@
 package entities.func;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ import sistemas.ProdutoVenda;
 public class FuncaoSistema implements AppSistema {
 
 	@Override
-	public Compra newCompra(Scanner sc, List<Produto> estoque,List<Compra> compra, App app) {
+	public Compra newCompra(Scanner sc, List<Produto> estoque, List<Compra> compra, App app) {
 
 		LocalDate data = LocalDate.now();
 		Produto pdt = checkProduto(sc, estoque, app);
@@ -28,10 +29,10 @@ public class FuncaoSistema implements AppSistema {
 		System.out.print("Valor: ");
 		double precoCompra = app.lerDouble(sc);
 		pdt.setQuantidade(pdt.getQuantidade() + quantidadeCompra);
-		
+
 		Compra cmp = new Compra(data, pdt, quantidadeCompra, precoCompra);
 		compra.add(cmp);
-		
+
 		return cmp;
 
 	}
@@ -67,29 +68,40 @@ public class FuncaoSistema implements AppSistema {
 	@Override
 	public ProdutoVenda newPdtVenda(Scanner sc, List<Produto> estoque, App app) {
 		Produto pdtVenda = app.filtroEstoque(sc, estoque);
-		if(pdtVenda == null) {
+		if (pdtVenda == null) {
 			System.out.print("Produto nao encontrado! Fazer cadastro ? 1-Sim|2-Não --> ");
 			int fazerProduto = app.lerInteiro(sc);
-			if(fazerProduto == 1) {
+			if (fazerProduto == 1) {
 				pdtVenda = app.newPdt(estoque, sc);
 				estoque.add(pdtVenda);
-			}else {
+			} else {
 				System.out.println("Cancelando venda...");
 				return null;
 			}
 		}
 		System.out.print("Quantidade: ");
 		int quant = app.lerInteiro(sc);
+		if (pdtVenda.getQuantidade() < quant) {
+			System.out.println("Estoque insuficiente|Valor em estoque: " + pdtVenda.getQuantidade());
+			System.out.print("Deseja continuar ?1-Sim/0-Não --> ");
+			int cont = app.lerInteiro(sc);
+			if (cont == 1) {
+				System.out.print("Nova quantidade: ");
+				quant = app.lerInteiro(sc);
+			} else {
+				return null;
+			}
+		}
 		System.out.print("Valor: R$");
 		double val = app.lerDouble(sc);
-		
+		pdtVenda.setQuantidade(pdtVenda.getQuantidade() - quant);
 		ProdutoVenda venda = new ProdutoVenda(pdtVenda, quant, val);
 		return venda;
 
 	}
 
 	@Override
-	public Pedido newPedido(Scanner sc, List<Cliente> cliente, List<Produto> estoque, App app) {
+	public Pedido newPedido(Scanner sc, List<Cliente> cliente, List<Produto> estoque, List<Pedido> venda, App app) {
 		System.out.println("==Cliente==");
 		Cliente clt = app.filtroCliente(sc, cliente);
 		if (clt == null) {
@@ -103,28 +115,126 @@ public class FuncaoSistema implements AppSistema {
 				return null;
 			}
 		}
-		LocalDate data = LocalDate.now();
-		
-		Pedido pedido = new Pedido(clt, data);
-		
-		System.out.println("==Produto==");
-		pedido.addItem(newPdtVenda(sc, estoque, app));
-		
-		
-		System.out.print("Add + : 1-Sim|0-Não -->");
-		int itens = app.lerInteiro(sc);
-		if(itens > 1 ) {
-			System.out.print("Digitar opção valida: 1 ou 0");
-			itens = app.lerInteiro(sc);
+
+		Pedido pdd = new Pedido(clt, LocalDate.now());
+
+		boolean adicionarMais = true;
+		while (adicionarMais) {
+			System.out.println("== Produto ==");
+			ProdutoVenda pv = newPdtVenda(sc, estoque, app);
+			if (pv != null) {
+				pdd.addItem(pv);
+
+			} else {
+				System.out.println("Item não adicionado.");
+			}
+
+			int opcao;
+			do {
+				System.out.print("Adicionar mais um item? 1-Sim | 0-Não --> ");
+				opcao = app.lerInteiro(sc);
+				if (opcao != 0 && opcao != 1) {
+					System.out.print("Opção inválida! Digite 1 ou 0 --> ");
+				}
+			} while (opcao != 0 && opcao != 1);
+
+			adicionarMais = (opcao == 1);
 		}
-		while(itens == 1) {
-			pedido.addItem(newPdtVenda(sc, estoque, app));
-			
-			itens = app.lerInteiro(sc);
+
+		System.out.println(pdd);
+
+		venda.add(pdd);
+		return pdd;
+	}
+
+	@Override
+	public void cancelarPedido(Scanner sc, List<Pedido> venda, List<Pedido> cancelado,  List<Produto> estoque, App app) {
+		
+		
+		
+		System.out.print("Forma de Procura--> 1-ID | 2-Nome Cliente: ");
+		int forma = app.lerInteiro(sc);
+
+		while (forma < 1 || forma > 2) {
+			System.out.print("Opção inválida. Digite novamente (1-ID | 2-Nome Cliente): ");
+			forma = app.lerInteiro(sc);
 		}
-	
-		
-		
-		return pedido;
-	}	
-}	
+
+		Pedido pedidoParaCancelar = null;
+
+		if (forma == 1) {
+			pedidoParaCancelar = acharPedidoPorId(sc, venda, app);
+		} else {
+			pedidoParaCancelar = acharPedidoPorNome(sc, venda, app);
+		}
+		if (pedidoParaCancelar != null) {
+	        System.out.println(pedidoParaCancelar);
+	        System.out.print("Deseja Cancelar esse pedido? 1-Sim -->");
+	        int desejaCancelarPedido = app.lerInteiro(sc);
+	        if (desejaCancelarPedido == 1) {
+	        	for (ProdutoVenda item : pedidoParaCancelar.getVenda()) {
+	                Produto produto = item.getProduto();
+	                int quantidadeCancelada = item.getQuantia();
+
+	                for (Produto pdtEstoque : estoque) {
+	                    if (pdtEstoque.getId() == produto.getId()) {
+	                        pdtEstoque.setQuantidade(pdtEstoque.getQuantidade() + quantidadeCancelada);
+	                        break;
+	                    }
+	                }}
+	            cancelado.add(pedidoParaCancelar);
+	            venda.remove(pedidoParaCancelar);
+	            System.out.println("Pedido Cancelado.");
+	        } else {
+	            System.out.println("Cancelamento abortado.");
+	        }
+	    } else {
+	        System.out.println("Pedido não encontrado.");
+	    }
+
+	}
+
+	@Override
+	public Pedido acharPedidoPorId(Scanner sc, List<Pedido> venda, App app) {
+		System.out.print("Digite o ID da venda: ");
+		long idPedido = app.lerLong(sc);
+		for (Pedido p : venda) {
+			if (p.getId() == idPedido) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Pedido acharPedidoPorNome(Scanner sc, List<Pedido> venda, App app) {
+
+		System.out.print("Nome do Cliente: ");
+		String nomeClientePedido = app.lerString(sc);
+
+		List<Pedido> encontradoPedido = new ArrayList<Pedido>();
+
+		for (Pedido pNome : venda) {
+			if (pNome.getCliente().getNomeCliente().toLowerCase().contains(nomeClientePedido.toLowerCase())) {
+				encontradoPedido.add(pNome);
+			}
+		}
+		if (encontradoPedido.isEmpty()) {
+			System.out.println("Nenhum Pedido encontrado");
+			return null;
+
+		}
+		if (encontradoPedido.size() == 1) {
+			return encontradoPedido.get(0);
+		} else {
+			System.out.print("Selecione por Id: ");
+			long pedidoID = app.lerLong(sc);
+			for (Pedido pdd : encontradoPedido) {
+				if (pdd.getId() == pedidoID) {
+					return pdd;
+				}
+			}
+			return null;
+		}
+	}
+}
